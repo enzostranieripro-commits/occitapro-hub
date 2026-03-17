@@ -6,6 +6,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { SectorProvider } from '@/contexts/SectorContext';
 import { AuthProvider } from '@/contexts/AuthContext';
+import { WorkspaceProvider } from '@/contexts/WorkspaceContext';
 
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
@@ -32,15 +33,17 @@ const App = () => (
       <BrowserRouter>
         <SectorProvider>
           <AuthProvider>
-            <Suspense fallback={<Loading />}>
-              <Routes>
-                <Route path="/" element={<Index />} />
-                <Route path="/auth" element={<Auth />} />
-                <Route path="/onboarding" element={<Onboarding />} />
-                <Route path="/dashboard/*" element={<Dashboard />} />
-                <Route path="*" element={<NotFound />} />
-              </Routes>
-            </Suspense>
+            <WorkspaceProvider>
+              <Suspense fallback={<Loading />}>
+                <Routes>
+                  <Route path="/" element={<Index />} />
+                  <Route path="/auth" element={<Auth />} />
+                  <Route path="/onboarding" element={<Onboarding />} />
+                  <Route path="/dashboard/*" element={<Dashboard />} />
+                  <Route path="*" element={<NotFound />} />
+                </Routes>
+              </Suspense>
+            </WorkspaceProvider>
           </AuthProvider>
         </SectorProvider>
       </BrowserRouter>
