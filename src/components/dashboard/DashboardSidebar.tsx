@@ -7,6 +7,7 @@ import {
   MessageSquare,
   Bot,
   Settings,
+  Sparkles,
 } from 'lucide-react';
 import { NavLink } from '@/components/NavLink';
 import { useSector } from '@/contexts/SectorContext';
@@ -29,7 +30,7 @@ const menuItems = [
   { title: 'Catalogue', url: '/dashboard/catalog', icon: Package },
   { title: 'Planning', url: '/dashboard/planning', icon: CalendarDays },
   { title: 'Messagerie', url: '/dashboard/messages', icon: MessageSquare },
-  { title: 'Assistant IA', url: '/dashboard/ai', icon: Bot },
+  { title: 'Assistant IA', url: '/dashboard/ai', icon: Bot, highlight: true },
   { title: 'Paramètres', url: '/dashboard/settings', icon: Settings },
 ];
 
@@ -46,23 +47,26 @@ export function DashboardSidebar({ workspace }: Props) {
     <Sidebar collapsible="icon">
       <SidebarContent>
         {/* Brand */}
-        <div className="flex items-center gap-2 px-4 py-4">
+        <div className="flex items-center gap-2.5 px-4 py-4">
           <div
-            className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg"
+            className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl shadow-md"
             style={{ backgroundColor: sector?.primaryColor || 'hsl(var(--primary))' }}
           >
             <span className="text-xs font-bold text-primary-foreground">OP</span>
           </div>
           {!collapsed && (
             <div className="min-w-0">
-              <p className="truncate text-sm font-semibold">{workspace.name}</p>
-              <p className="truncate text-xs text-muted-foreground">{sector?.label}</p>
+              <p className="truncate text-sm font-bold">{workspace.name}</p>
+              <p className="truncate text-[11px] text-muted-foreground flex items-center gap-1">
+                <Sparkles className="h-3 w-3" />
+                {sector?.label}
+              </p>
             </div>
           )}
         </div>
 
         <SidebarGroup>
-          <SidebarGroupLabel>Navigation</SidebarGroupLabel>
+          <SidebarGroupLabel className="text-[10px] uppercase tracking-wider">Navigation</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {menuItems.map(item => (
@@ -71,8 +75,10 @@ export function DashboardSidebar({ workspace }: Props) {
                     <NavLink
                       to={item.url}
                       end={item.url === '/dashboard'}
-                      className="hover:bg-muted/50"
-                      activeClassName="bg-muted text-primary font-medium"
+                      className={`hover:bg-muted/50 transition-colors ${
+                        (item as any).highlight ? 'text-primary font-medium' : ''
+                      }`}
+                      activeClassName="bg-primary/10 text-primary font-semibold shadow-sm"
                     >
                       <item.icon className="mr-2 h-4 w-4" />
                       {!collapsed && <span>{item.title}</span>}
