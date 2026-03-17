@@ -1,8 +1,11 @@
-import { motion } from 'framer-motion';
+import { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { SECTORS, SectorConfig } from '@/lib/sectors';
 import { useSector } from '@/contexts/SectorContext';
-import { ArrowRight, Zap, Shield, BarChart3, Users } from 'lucide-react';
+import { ArrowRight, Zap, Shield, BarChart3, Users, X, Lock } from 'lucide-react';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
 
 function SectorCard({ sector, index }: { sector: SectorConfig; index: number }) {
   const navigate = useNavigate();
@@ -56,7 +59,36 @@ const FEATURES = [
   { icon: Users, title: 'Collaboratif', desc: 'Messagerie et gestion d\'équipe' },
 ];
 
+const ADMIN_LOGIN = 'AveyronIA';
+const ADMIN_PASSWORD = 'enzo1512';
+
 export default function LandingPage() {
+  const navigate = useNavigate();
+  const [showModal, setShowModal] = useState(false);
+  const [login, setLogin] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+
+  const handleAdminLogin = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (login === ADMIN_LOGIN && password === ADMIN_PASSWORD) {
+      setShowModal(false);
+      setLogin('');
+      setPassword('');
+      setError('');
+      navigate('/super-admin');
+    } else {
+      setError('Identifiant ou mot de passe incorrect.');
+    }
+  };
+
+  const closeModal = () => {
+    setShowModal(false);
+    setLogin('');
+    setPassword('');
+    setError('');
+  };
+
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
@@ -68,15 +100,98 @@ export default function LandingPage() {
             </div>
             <span className="text-xl font-bold tracking-tight">OccitaPro</span>
           </div>
-          <a
-            href="/auth"
-            className="flex items-center gap-1.5 rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground shadow-md transition-all hover:shadow-lg hover:-translate-y-0.5"
-          >
-            Se connecter
-            <ArrowRight className="h-3.5 w-3.5" />
-          </a>
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => setShowModal(true)}
+              className="flex items-center gap-1.5 rounded-lg border border-border bg-card px-3 py-2 text-xs font-medium text-muted-foreground shadow-sm transition-all hover:bg-muted hover:text-foreground"
+            >
+              <Shield className="h-3.5 w-3.5" />
+              Back Office
+            </button>
+            <a
+              href="/auth"
+              className="flex items-center gap-1.5 rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground shadow-md transition-all hover:shadow-lg hover:-translate-y-0.5"
+            >
+              Se connecter
+              <ArrowRight className="h-3.5 w-3.5" />
+            </a>
+          </div>
         </div>
       </header>
+
+      {/* Back Office Login Modal */}
+      <AnimatePresence>
+        {showModal && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 backdrop-blur-sm"
+            onClick={closeModal}
+          >
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95, y: 16 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: 16 }}
+              transition={{ duration: 0.2 }}
+              className="relative w-full max-w-sm rounded-2xl border border-border bg-card p-8 shadow-2xl"
+              onClick={e => e.stopPropagation()}
+            >
+              {/* Close button */}
+              <button
+                onClick={closeModal}
+                className="absolute right-4 top-4 rounded-lg p-1.5 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+              >
+                <X className="h-4 w-4" />
+              </button>
+
+              {/* Icon */}
+              <div className="mb-5 flex justify-center">
+                <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-primary/10">
+                  <Lock className="h-7 w-7 text-primary" />
+                </div>
+              </div>
+
+              <h2 className="mb-1 text-center text-xl font-bold">Back Office</h2>
+              <p className="mb-6 text-center text-sm text-muted-foreground">Accès réservé aux administrateurs</p>
+
+              <form onSubmit={handleAdminLogin} className="space-y-4">
+                <div>
+                  <label className="mb-1.5 block text-sm font-medium">Identifiant</label>
+                  <Input
+                    value={login}
+                    onChange={e => { setLogin(e.target.value); setError(''); }}
+                    placeholder="Identifiant"
+                    autoFocus
+                    autoComplete="off"
+                  />
+                </div>
+                <div>
+                  <label className="mb-1.5 block text-sm font-medium">Mot de passe</label>
+                  <Input
+                    type="password"
+                    value={password}
+                    onChange={e => { setPassword(e.target.value); setError(''); }}
+                    placeholder="••••••••"
+                    autoComplete="off"
+                  />
+                </div>
+
+                {error && (
+                  <p className="rounded-lg bg-destructive/10 px-3 py-2 text-center text-sm text-destructive">
+                    {error}
+                  </p>
+                )}
+
+                <Button type="submit" className="w-full gap-2">
+                  <Shield className="h-4 w-4" />
+                  Accéder au Back Office
+                </Button>
+              </form>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Hero */}
       <section className="container py-20 text-center">
@@ -146,16 +261,6 @@ export default function LandingPage() {
           ))}
         </div>
       </section>
-
-      {/* Back Office - accès discret */}
-      <div className="pb-4 text-center">
-        <a
-          href="/super-admin"
-          className="text-xs text-muted-foreground/30 hover:text-muted-foreground transition-colors"
-        >
-          Back Office
-        </a>
-      </div>
 
       {/* Footer */}
       <footer className="border-t border-border bg-card py-8 text-center text-sm text-muted-foreground">
