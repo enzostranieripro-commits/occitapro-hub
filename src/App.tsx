@@ -14,6 +14,7 @@ import NotFound from "./pages/NotFound";
 const Auth = lazy(() => import('./pages/Auth'));
 const Onboarding = lazy(() => import('./pages/Onboarding'));
 const Dashboard = lazy(() => import('./pages/Dashboard'));
+const SuperAdmin = lazy(() => import('./pages/SuperAdmin'));
 
 const queryClient = new QueryClient();
 
