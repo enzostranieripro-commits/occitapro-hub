@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useAuth } from '@/contexts/AuthContext';
 import { useSector } from '@/contexts/SectorContext';
+import { useWorkspace } from '@/contexts/WorkspaceContext';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { Input } from '@/components/ui/input';
@@ -11,6 +12,7 @@ import { Button } from '@/components/ui/button';
 export default function OnboardingPage() {
   const { user } = useAuth();
   const { sector, sectorId } = useSector();
+  const { refreshWorkspace } = useWorkspace();
   const navigate = useNavigate();
   const { toast } = useToast();
   const [name, setName] = useState('');
@@ -42,6 +44,7 @@ export default function OnboardingPage() {
       if (memErr) throw memErr;
 
       toast({ title: 'Espace créé !', description: `${name} est prêt.` });
+      await refreshWorkspace();
       navigate('/dashboard');
     } catch (err: any) {
       toast({ title: 'Erreur', description: err.message, variant: 'destructive' });
