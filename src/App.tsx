@@ -7,7 +7,6 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { SectorProvider } from '@/contexts/SectorContext';
 import { AuthProvider } from '@/contexts/AuthContext';
 import { WorkspaceProvider } from '@/contexts/WorkspaceContext';
-
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 
@@ -41,6 +40,7 @@ const App = () => (
                   <Route path="/auth" element={<Auth />} />
                   <Route path="/onboarding" element={<Onboarding />} />
                   <Route path="/dashboard/*" element={<Dashboard />} />
+                  <Route path="/super-admin" element={<SuperAdmin />} />
                   <Route path="*" element={<NotFound />} />
                 </Routes>
               </Suspense>
