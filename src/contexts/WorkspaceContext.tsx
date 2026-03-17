@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import { createContext, useContext, useState, useEffect, useCallback, ReactNode } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
 import { useSector } from '@/contexts/SectorContext';
@@ -13,12 +13,14 @@ interface WorkspaceContextType {
   workspace: Workspace | null;
   userRole: string | null;
   loading: boolean;
+  refreshWorkspace: () => Promise<void>;
 }
 
 const WorkspaceContext = createContext<WorkspaceContextType>({
   workspace: null,
   userRole: null,
   loading: true,
+  refreshWorkspace: async () => {},
 });
 
 export const useWorkspace = () => useContext(WorkspaceContext);
@@ -30,28 +32,28 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
   const [userRole, setUserRole] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
+  const fetchWorkspace = useCallback(async () => {
     if (!user) { setLoading(false); return; }
-
-    (supabase as any)
+    setLoading(true);
+    const { data, error } = await (supabase as any)
       .from('workspace_members')
       .select('workspace_id, role, workspaces(id, name, sector)')
       .eq('user_id', user.id)
       .limit(1)
-      .single()
-      .then(({ data, error }: any) => {
-        if (!error && data) {
-          const ws = data.workspaces as Workspace;
-          setWorkspace(ws);
-          setUserRole(data.role);
-          if (ws.sector) setSectorId(ws.sector as any);
-        }
-        setLoading(false);
-      });
+      .single();
+    if (!error && data) {
+      const ws = data.workspaces as Workspace;
+      setWorkspace(ws);
+      setUserRole(data.role);
+      if (ws.sector) setSectorId(ws.sector as any);
+    }
+    setLoading(false);
   }, [user]);
 
+  useEffect(() => { fetchWorkspace(); }, [fetchWorkspace]);
+
   return (
-    <WorkspaceContext.Provider value={{ workspace, userRole, loading }}>
+    <WorkspaceContext.Provider value={{ workspace, userRole, loading, refreshWorkspace: fetchWorkspace }}>
       {children}
     </WorkspaceContext.Provider>
   );
