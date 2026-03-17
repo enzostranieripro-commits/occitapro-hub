@@ -1,96 +1,124 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
-All colors MUST be HSL.
-*/
-
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    --font-body: 'Inter', sans-serif;
+    --font-display: 'Inter', sans-serif;
+
+    --background: 210 20% 98%;
+    --foreground: 222 47% 11%;
 
     --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card-foreground: 222 47% 11%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover-foreground: 222 47% 11%;
 
-    --primary: 222.2 47.4% 11.2%;
+    --primary: 222 47% 11%;
     --primary-foreground: 210 40% 98%;
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 210 40% 96%;
+    --secondary-foreground: 222 47% 11%;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    --muted: 210 20% 95%;
+    --muted-foreground: 215 16% 47%;
 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    --accent: 210 40% 96%;
+    --accent-foreground: 222 47% 11%;
 
-    --destructive: 0 84.2% 60.2%;
+    --destructive: 0 84% 60%;
     --destructive-foreground: 210 40% 98%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    --border: 214 32% 91%;
+    --input: 214 32% 91%;
+    --ring: 222 47% 11%;
 
-    --radius: 0.5rem;
+    --radius: 0.75rem;
+
+    /* Sector tokens - overridden by data-sector */
+    --sector-primary: 222 47% 11%;
+    --sector-primary-fg: 210 40% 98%;
+    --sector-secondary: 45 80% 60%;
+    --sector-secondary-fg: 222 47% 11%;
 
     --sidebar-background: 0 0% 98%;
-
-    --sidebar-foreground: 240 5.3% 26.1%;
-
-    --sidebar-primary: 240 5.9% 10%;
-
+    --sidebar-foreground: 240 5% 26%;
+    --sidebar-primary: 240 6% 10%;
     --sidebar-primary-foreground: 0 0% 98%;
-
-    --sidebar-accent: 240 4.8% 95.9%;
-
-    --sidebar-accent-foreground: 240 5.9% 10%;
-
+    --sidebar-accent: 240 5% 96%;
+    --sidebar-accent-foreground: 240 6% 10%;
     --sidebar-border: 220 13% 91%;
-
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --sidebar-ring: 217 91% 60%;
   }
 
-  .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
-
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
-
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
-
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 11.2%;
-
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
-
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
-
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
-
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
-
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
-    --sidebar-background: 240 5.9% 10%;
-    --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+  /* ── Sector overrides ── */
+  [data-sector="restauration"] {
+    --sector-primary: 0 100% 27%;
+    --sector-primary-fg: 0 0% 100%;
+    --sector-secondary: 43 76% 46%;
+    --sector-secondary-fg: 0 0% 10%;
+    --primary: 0 100% 27%;
+    --primary-foreground: 0 0% 100%;
+  }
+  [data-sector="btp"] {
+    --sector-primary: 0 0% 18%;
+    --sector-primary-fg: 0 0% 100%;
+    --sector-secondary: 37 90% 55%;
+    --sector-secondary-fg: 0 0% 10%;
+    --primary: 0 0% 18%;
+    --primary-foreground: 0 0% 100%;
+  }
+  [data-sector="transport"] {
+    --sector-primary: 218 49% 20%;
+    --sector-primary-fg: 0 0% 100%;
+    --sector-secondary: 24 100% 50%;
+    --sector-secondary-fg: 0 0% 100%;
+    --primary: 218 49% 20%;
+    --primary-foreground: 0 0% 100%;
+  }
+  [data-sector="commerce"] {
+    --sector-primary: 138 37% 36%;
+    --sector-primary-fg: 0 0% 100%;
+    --sector-secondary: 48 100% 90%;
+    --sector-secondary-fg: 138 37% 20%;
+    --primary: 138 37% 36%;
+    --primary-foreground: 0 0% 100%;
+  }
+  [data-sector="sante"] {
+    --sector-primary: 263 58% 52%;
+    --sector-primary-fg: 0 0% 100%;
+    --sector-secondary: 0 60% 94%;
+    --sector-secondary-fg: 263 40% 30%;
+    --primary: 263 58% 52%;
+    --primary-foreground: 0 0% 100%;
+  }
+  [data-sector="immobilier"] {
+    --sector-primary: 183 100% 23%;
+    --sector-primary-fg: 0 0% 100%;
+    --sector-secondary: 40 30% 90%;
+    --sector-secondary-fg: 183 60% 15%;
+    --primary: 183 100% 23%;
+    --primary-foreground: 0 0% 100%;
+  }
+  [data-sector="tourisme"] {
+    --sector-primary: 155 42% 30%;
+    --sector-primary-fg: 0 0% 100%;
+    --sector-secondary: 26 85% 60%;
+    --sector-secondary-fg: 0 0% 100%;
+    --primary: 155 42% 30%;
+    --primary-foreground: 0 0% 100%;
+  }
+  [data-sector="hotellerie"] {
+    --sector-primary: 220 44% 20%;
+    --sector-primary-fg: 0 0% 100%;
+    --sector-secondary: 36 60% 87%;
+    --sector-secondary-fg: 220 44% 20%;
+    --primary: 220 44% 20%;
+    --primary-foreground: 0 0% 100%;
   }
 }
 
@@ -98,8 +126,11 @@ All colors MUST be HSL.
   * {
     @apply border-border;
   }
-
   body {
     @apply bg-background text-foreground;
+    font-family: var(--font-body);
+  }
+  h1, h2, h3 {
+    font-family: var(--font-display);
   }
 }
