@@ -148,7 +148,18 @@ export default function LandingPage() {
       </section>
 
       {/* Footer */}
-      <footer className="border-t border-border bg-card py-8 text-center text-sm text-muted-foreground">
+     {/* Back Office - accès discret */}
+<div className="pb-4 text-center">
+  
+    href="/super-admin"
+    className="text-xs text-muted-foreground/30 hover:text-muted-foreground transition-colors"
+  >
+    Back Office
+  </a>
+</div>
+
+{/* Footer */}
+<footer className="border-t border-border bg-card py-8 text-center text-sm text-muted-foreground">
         <div className="flex items-center justify-center gap-2 mb-2">
           <div className="flex h-6 w-6 items-center justify-center rounded-lg bg-foreground">
             <span className="text-[9px] font-bold text-background">OP</span>
