@@ -7,26 +7,43 @@ import { DashboardSidebar } from '@/components/dashboard/DashboardSidebar';
 import { DashboardHeader } from '@/components/dashboard/DashboardHeader';
 import { KPICards } from '@/components/dashboard/KPICards';
 import { SidebarProvider } from '@/components/ui/sidebar';
+import { BarChart3, Bell as BellIcon, TrendingUp } from 'lucide-react';
 
 const ClientsPage = lazy(() => import('./dashboard/ClientsPage'));
 const CatalogPage = lazy(() => import('./dashboard/CatalogPage'));
 const DocumentsPage = lazy(() => import('./dashboard/DocumentsPage'));
 const PlanningPage = lazy(() => import('./dashboard/PlanningPage'));
+const MessagesPage = lazy(() => import('./dashboard/MessagesPage'));
+const AIAssistantPage = lazy(() => import('./dashboard/AIAssistantPage'));
+const SettingsPage = lazy(() => import('./dashboard/SettingsPage'));
 
-function DashboardHome({ workspace }: { workspace: { id: string; sector: string } }) {
+function DashboardHome({ workspace }: { workspace: { id: string; sector: string; name: string } }) {
   return (
     <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3 }}>
-      <h2 className="text-2xl font-bold">Bonjour 👋</h2>
-      <p className="mt-1 text-muted-foreground">Voici un résumé de votre activité</p>
+      <div className="flex items-center gap-3">
+        <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-primary to-primary/60 shadow-lg">
+          <BarChart3 className="h-5 w-5 text-primary-foreground" />
+        </div>
+        <div>
+          <h2 className="text-2xl font-bold">Bonjour 👋</h2>
+          <p className="text-sm text-muted-foreground">Voici un résumé de votre activité — <strong>{workspace.name}</strong></p>
+        </div>
+      </div>
       <KPICards sectorId={workspace.sector} workspaceId={workspace.id} />
       <div className="mt-8 grid gap-6 lg:grid-cols-3">
-        <div className="lg:col-span-2 rounded-2xl border border-border bg-card p-6 shadow-sm">
-          <h3 className="font-semibold">Activité récente</h3>
-          <p className="mt-2 text-sm text-muted-foreground">Les graphiques seront disponibles prochainement.</p>
+        <div className="lg:col-span-2 rounded-2xl border border-border bg-card p-6 shadow-sm hover:shadow-md transition-shadow">
+          <div className="flex items-center gap-2 mb-3">
+            <TrendingUp className="h-5 w-5 text-primary" />
+            <h3 className="font-semibold">Activité récente</h3>
+          </div>
+          <p className="text-sm text-muted-foreground">Les graphiques seront disponibles prochainement.</p>
         </div>
-        <div className="rounded-2xl border border-border bg-card p-6 shadow-sm">
-          <h3 className="font-semibold">Alertes</h3>
-          <p className="mt-2 text-sm text-muted-foreground">Aucune alerte pour le moment.</p>
+        <div className="rounded-2xl border border-border bg-card p-6 shadow-sm hover:shadow-md transition-shadow">
+          <div className="flex items-center gap-2 mb-3">
+            <BellIcon className="h-5 w-5 text-destructive" />
+            <h3 className="font-semibold">Alertes</h3>
+          </div>
+          <p className="text-sm text-muted-foreground">Aucune alerte pour le moment.</p>
         </div>
       </div>
     </motion.div>
@@ -70,6 +87,9 @@ export default function DashboardPage() {
                 <Route path="catalog" element={<CatalogPage />} />
                 <Route path="documents" element={<DocumentsPage />} />
                 <Route path="planning" element={<PlanningPage />} />
+                <Route path="messages" element={<MessagesPage />} />
+                <Route path="ai" element={<AIAssistantPage />} />
+                <Route path="settings" element={<SettingsPage />} />
                 <Route path="*" element={<div className="py-20 text-center text-muted-foreground">Module en cours de développement</div>} />
               </Routes>
             </Suspense>
