@@ -27,13 +27,13 @@ export default function DashboardPage() {
     if (!user) { navigate('/auth'); return; }
     
     // Fetch user's workspace
-    supabase
+    (supabase as any)
       .from('workspace_members')
       .select('workspace_id, workspaces(id, name, sector)')
       .eq('user_id', user.id)
       .limit(1)
       .single()
-      .then(({ data, error }) => {
+      .then(({ data, error }: any) => {
         if (error || !data) {
           navigate('/onboarding');
           return;

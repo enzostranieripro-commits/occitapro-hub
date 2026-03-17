@@ -27,15 +27,16 @@ export default function OnboardingPage() {
     setLoading(true);
     try {
       // Create workspace
-      const { data: ws, error: wsErr } = await supabase
+      const { data: ws, error: wsErr } = await (supabase as any)
         .from('workspaces')
         .insert({ name, sector: sectorId, owner_id: user.id })
         .select()
         .single();
       if (wsErr) throw wsErr;
+      if (!ws) throw new Error('Failed to create workspace');
 
       // Add owner as admin member
-      const { error: memErr } = await supabase
+      const { error: memErr } = await (supabase as any)
         .from('workspace_members')
         .insert({ workspace_id: ws.id, user_id: user.id, email: user.email, role: 'admin' });
       if (memErr) throw memErr;
